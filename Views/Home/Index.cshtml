@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">Metro Bus <span class="hero-highlight">Twin Cities</span></h1>
+        <p class="hero-subtitle">Your Gateway to Rawalpindi & Islamabad Public Transport</p>
+        <p class="hero-desc">Book tickets, explore routes, and travel conveniently across the Twin Cities metro bus network.</p>
+        <div class="hero-actions">
+            <a asp-controller="Booking" asp-action="Create" class="hero-btn hero-btn-primary">
+                🎫 Book a Ticket
+            </a>
+            <a asp-controller="Routes" asp-action="Index" class="hero-btn hero-btn-secondary">
+                🗺️ View Routes
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-number">4</span>
+                <span class="hero-stat-label">Bus Lines</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">47</span>
+                <span class="hero-stat-label">Stops</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">91 km</span>
+                <span class="hero-stat-label">Coverage</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">Rs.40</span>
+                <span class="hero-stat-label">Starting Fare</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bus Lines Quick Access -->
+<div class="container mt-5 mb-3">
+    <div class="section-header">
+        <h2>Our Bus Lines</h2>
+        <p>Four color-coded routes serving the twin cities</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+            <a asp-controller="Routes" asp-action="Details" asp-route-id="1" class="bus-line-card" style="--line-color: #DC2626;">
+                <div class="bus-line-icon" style="background: linear-gradient(135deg, #DC2626, #991B1B);">RED</div>
+                <h4>Red Line</h4>
+                <p>Saddar → Islamabad Secretariat</p>
+                <span class="bus-line-fare">Rs. 50</span>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <a asp-controller="Routes" asp-action="Details" asp-route-id="2" class="bus-line-card" style="--line-color: #2563EB;">
+                <div class="bus-line-icon" style="background: linear-gradient(135deg, #2563EB, #1D4ED8);">BLUE</div>
+                <h4>Blue Line</h4>
+                <p>Faizabad → Faisal Mosque</p>
+                <span class="bus-line-fare">Rs. 50</span>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <a asp-controller="Routes" asp-action="Details" asp-route-id="3" class="bus-line-card" style="--line-color: #EA580C;">
+                <div class="bus-line-icon" style="background: linear-gradient(135deg, #EA580C, #C2410C);">ORANGE</div>
+                <h4>Orange Line</h4>
+                <p>Railway Station → Airport</p>
+                <span class="bus-line-fare">Rs. 80</span>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <a asp-controller="Routes" asp-action="Details" asp-route-id="4" class="bus-line-card" style="--line-color: #16A34A;">
+                <div class="bus-line-icon" style="background: linear-gradient(135deg, #16A34A, #15803D);">GREEN</div>
+                <h4>Green Line</h4>
+                <p>Pirwadhai → Centaurus Mall</p>
+                <span class="bus-line-fare">Rs. 40</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Choose Metro Twin Cities?</h2>
+            <p>Modern, safe, and affordable public transport</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">🏷️</div>
+                    <h4>Affordable Fares</h4>
+                    <p>Starting from just Rs. 40, enjoy the most economical way to travel across the twin cities.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">❄️</div>
+                    <h4>Air Conditioned</h4>
+                    <p>All buses are fully air-conditioned for a comfortable journey in every season.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h4>Frequent Service</h4>
+                    <p>Buses every 8-15 minutes from 5:00 AM to 11:00 PM, so you never wait long.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h4>Safe & Secure</h4>
+                    <p>CCTV monitored buses and stations with dedicated security for a safe commute.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">♿</div>
+                    <h4>Accessible</h4>
+                    <p>Wheelchair accessible buses and stations, with priority seating for elderly and disabled.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h4>Online Booking</h4>
+                    <p>Book your tickets online in seconds. No queues, no hassle — just ride!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section">
+    <div class="container text-center">
+        <h2>Ready to Ride?</h2>
+        <p>Book your metro bus ticket now and enjoy a hassle-free commute across Rawalpindi & Islamabad.</p>
+        <a asp-controller="Booking" asp-action="Create" class="cta-btn">🎫 Book Your Ticket Now</a>
+    </div>
+</div>

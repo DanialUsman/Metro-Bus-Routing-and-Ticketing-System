@@ -1,0 +1,99 @@
+@model FirstWeb.Models.ViewModels.RouteDetailsViewModel
+@{
+    ViewData["Title"] = Model.Route.RouteName;
+}
+
+<div class="route-details-hero" style="--route-color: @Model.Route.BusColor;">
+    <div class="route-details-hero-overlay"></div>
+    <div class="route-details-hero-content">
+        <div class="route-badge-lg" style="background: @Model.Route.BusColor;">
+            @Model.Route.RouteCode
+        </div>
+        <h1>@Model.Route.RouteName</h1>
+        <p>@Model.Route.FromStation ⟶ @Model.Route.ToStation</p>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Route Info Panel -->
+        <div class="col-lg-4 mb-4">
+            <div class="detail-info-card">
+                <h4>Route Information</h4>
+                <div class="detail-info-grid">
+                    <div class="detail-info-item">
+                        <span class="detail-label">Fare</span>
+                        <span class="detail-value fare-highlight">Rs. @Model.Route.Fare</span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-label">Distance</span>
+                        <span class="detail-value">@Model.Route.DistanceKm km</span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-label">Est. Time</span>
+                        <span class="detail-value">@Model.Route.EstimatedTimeMinutes min</span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-label">Frequency</span>
+                        <span class="detail-value">@Model.Route.Frequency</span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-label">Hours</span>
+                        <span class="detail-value">@Model.Route.OperatingHours</span>
+                    </div>
+                    <div class="detail-info-item">
+                        <span class="detail-label">Total Stops</span>
+                        <span class="detail-value">@Model.Route.TotalStops</span>
+                    </div>
+                </div>
+                <a asp-controller="Booking" asp-action="Create" asp-route-routeId="@Model.Route.RouteId"
+                   class="btn-book-now" style="background: @Model.Route.BusColor;">
+                    🎫 Book Ticket Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Stops Timeline -->
+        <div class="col-lg-8">
+            <div class="stops-card">
+                <h4>Route Stops</h4>
+                <p class="text-muted mb-4">Complete list of stops from <strong>@Model.Route.FromStation</strong> to <strong>@Model.Route.ToStation</strong></p>
+                <div class="stops-timeline">
+                    @foreach (var stop in Model.Stops)
+                    {
+                        var isFirst = stop.StopOrder == 1;
+                        var isLast = stop.StopOrder == Model.Stops.Count;
+                        <div class="stop-item @(isFirst ? "stop-first" : "") @(isLast ? "stop-last" : "")">
+                            <div class="stop-dot-container">
+                                <div class="stop-dot" style="background: @Model.Route.BusColor; @(isFirst || isLast ? "transform: scale(1.4);" : "")"></div>
+                                @if (!isLast)
+                                {
+                                    <div class="stop-line" style="background: @Model.Route.BusColor;"></div>
+                                }
+                            </div>
+                            <div class="stop-info">
+                                <div class="stop-name">
+                                    @stop.StopName
+                                    @if (isFirst)
+                                    {
+                                        <span class="stop-tag start-tag">Start</span>
+                                    }
+                                    @if (isLast)
+                                    {
+                                        <span class="stop-tag end-tag">End</span>
+                                    }
+                                </div>
+                                <div class="stop-area">@stop.Area</div>
+                            </div>
+                            <div class="stop-order">#@stop.StopOrder</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-3 mb-5">
+        <a asp-action="Index" class="btn-back-routes">← Back to All Routes</a>
+    </div>
+</div>

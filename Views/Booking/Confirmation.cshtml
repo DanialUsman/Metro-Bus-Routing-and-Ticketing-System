@@ -1,0 +1,78 @@
+@model FirstWeb.Models.ViewModels.BookingConfirmationViewModel
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="confirmation-card">
+                <div class="confirmation-icon">✅</div>
+                <h2>Booking Confirmed!</h2>
+                <p class="confirmation-subtitle">Your ticket has been booked successfully</p>
+
+                <div class="confirmation-ref">
+                    <span>Booking Reference</span>
+                    <strong>@Model.Booking.BookingReference</strong>
+                </div>
+
+                <div class="confirmation-details">
+                    <div class="conf-section">
+                        <h5>🚌 Journey Details</h5>
+                        <div class="conf-grid">
+                            <div class="conf-item">
+                                <span class="conf-label">Route</span>
+                                <span class="conf-value">@Model.Route.RouteName</span>
+                            </div>
+                            <div class="conf-item">
+                                <span class="conf-label">From</span>
+                                <span class="conf-value">@Model.Booking.BoardingStop</span>
+                            </div>
+                            <div class="conf-item">
+                                <span class="conf-label">To</span>
+                                <span class="conf-value">@Model.Booking.DestinationStop</span>
+                            </div>
+                            <div class="conf-item">
+                                <span class="conf-label">Travel Date</span>
+                                <span class="conf-value">@Model.Booking.TravelDate.ToString("dddd, MMMM dd, yyyy")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conf-section">
+                        <h5>👤 Passenger Details</h5>
+                        <div class="conf-grid">
+                            <div class="conf-item">
+                                <span class="conf-label">Name</span>
+                                <span class="conf-value">@Model.Booking.PassengerName</span>
+                            </div>
+                            <div class="conf-item">
+                                <span class="conf-label">Email</span>
+                                <span class="conf-value">@Model.Booking.PassengerEmail</span>
+                            </div>
+                            <div class="conf-item">
+                                <span class="conf-label">Phone</span>
+                                <span class="conf-value">@Model.Booking.PassengerPhone</span>
+                            </div>
+                            <div class="conf-item">
+                                <span class="conf-label">Passengers</span>
+                                <span class="conf-value">@Model.Booking.NumberOfPassengers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conf-fare-total">
+                        <span>Total Fare Paid</span>
+                        <strong>Rs. @Model.Booking.TotalFare</strong>
+                    </div>
+                </div>
+
+                <div class="confirmation-actions">
+                    <a asp-action="DownloadTicket" asp-route-id="@Model.Booking.BookingId" class="btn-download-ticket">📥 Download PDF Ticket</a>
+                    <a asp-action="MyBookings" class="btn-my-bookings">📋 View My Bookings</a>
+                    <a asp-controller="Routes" asp-action="Index" class="btn-browse-routes">🚌 Browse Routes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

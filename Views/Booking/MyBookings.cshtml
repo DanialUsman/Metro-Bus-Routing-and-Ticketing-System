@@ -1,0 +1,97 @@
+@model List<FirstWeb.Models.Booking>
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="booking-hero">
+    <div class="booking-hero-overlay"></div>
+    <div class="booking-hero-content">
+        <h1>📋 My Bookings</h1>
+        <p>View and manage your ticket reservations</p>
+    </div>
+</div>
+
+<div class="container mt-4 mb-5">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="empty-bookings">
+            <div class="empty-icon">🎫</div>
+            <h3>No Bookings Yet</h3>
+            <p>You haven't booked any tickets yet. Start by browsing our routes!</p>
+            <a asp-controller="Routes" asp-action="Index" class="btn-browse-routes">🚌 Browse Routes</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var booking in Model)
+            {
+                var statusClass = booking.Status == "Confirmed" ? "status-confirmed" : "status-cancelled";
+                var routeColor = booking.Route?.BusColor ?? "#6B7280";
+
+                <div class="col-lg-6">
+                    <div class="my-booking-card">
+                        <div class="my-booking-header" style="border-left: 4px solid @routeColor;">
+                            <div>
+                                <span class="booking-ref">@booking.BookingReference</span>
+                                <span class="booking-status @statusClass">@booking.Status</span>
+                            </div>
+                            <span class="booking-date">🗓️ @booking.BookingDate.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        <div class="my-booking-body">
+                            <div class="mb-route-name" style="color: @routeColor;">
+                                @(booking.Route?.RouteName ?? "Unknown Route")
+                            </div>
+                            <div class="mb-journey">
+                                <div class="mb-stop">
+                                    <span class="mb-dot" style="background: @routeColor;"></span>
+                                    @booking.BoardingStop
+                                </div>
+                                <div class="mb-arrow">→</div>
+                                <div class="mb-stop">
+                                    <span class="mb-dot" style="background: @routeColor;"></span>
+                                    @booking.DestinationStop
+                                </div>
+                            </div>
+                            <div class="mb-details-grid">
+                                <div><strong>Travel Date:</strong> @booking.TravelDate.ToString("MMM dd, yyyy")</div>
+                                <div><strong>Passengers:</strong> @booking.NumberOfPassengers</div>
+                                <div><strong>Passenger:</strong> @booking.PassengerName</div>
+                                <div><strong>Total Fare:</strong> <span class="fare-amount">Rs. @booking.TotalFare</span></div>
+                            </div>
+                        </div>
+                        <div class="my-booking-footer">
+                            @if (booking.Status == "Confirmed")
+                            {
+                                <a asp-action="DownloadTicket" asp-route-id="@booking.BookingId" class="btn-download-ticket-sm">📥 Download Ticket</a>
+                            }
+                            @if (booking.Status == "Confirmed" && booking.TravelDate > DateTime.Today)
+                            {
+                                <form asp-action="Cancel" asp-route-id="@booking.BookingId" method="post" 
+                                      onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-cancel-booking-sm">❌ Cancel</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

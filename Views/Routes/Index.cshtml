@@ -1,0 +1,79 @@
+@model List<FirstWeb.Models.BusRoute>
+@{
+    ViewData["Title"] = "Bus Routes";
+}
+
+<div class="routes-hero">
+    <div class="routes-hero-overlay"></div>
+    <div class="routes-hero-content">
+        <h1 class="routes-hero-title">🚌 Explore Bus Routes</h1>
+        <p class="routes-hero-subtitle">Rawalpindi & Islamabad Twin Cities Metro Network</p>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row g-4">
+        @foreach (var route in Model)
+        {
+            <div class="col-lg-6 col-md-6">
+                <div class="route-card" style="--route-color: @route.BusColor;">
+                    <div class="route-card-header">
+                        <div class="route-badge" style="background: @route.BusColor;">
+                            @route.RouteCode
+                        </div>
+                        <div class="route-card-title">
+                            <h3>@route.RouteName</h3>
+                            <span class="route-fare-badge">Rs. @route.Fare</span>
+                        </div>
+                    </div>
+                    <div class="route-card-body">
+                        <div class="route-stations">
+                            <div class="station-from">
+                                <span class="station-dot" style="background: @route.BusColor;"></span>
+                                <div>
+                                    <small>FROM</small>
+                                    <strong>@route.FromStation</strong>
+                                </div>
+                            </div>
+                            <div class="station-line" style="border-color: @route.BusColor;"></div>
+                            <div class="station-to">
+                                <span class="station-dot" style="background: @route.BusColor;"></span>
+                                <div>
+                                    <small>TO</small>
+                                    <strong>@route.ToStation</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="route-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">📍</span>
+                                <span>@route.TotalStops Stops</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">📏</span>
+                                <span>@route.DistanceKm km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">⏱️</span>
+                                <span>@route.EstimatedTimeMinutes min</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🔄</span>
+                                <span>@route.Frequency</span>
+                            </div>
+                        </div>
+                        <p class="route-description">@route.Description</p>
+                    </div>
+                    <div class="route-card-footer">
+                        <a asp-action="Details" asp-route-id="@route.RouteId" class="btn-route-details" style="border-color: @route.BusColor; color: @route.BusColor;">
+                            View All Stops
+                        </a>
+                        <a asp-controller="Booking" asp-action="Create" asp-route-routeId="@route.RouteId" class="btn-route-book" style="background: @route.BusColor;">
+                            🎫 Book Ticket
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

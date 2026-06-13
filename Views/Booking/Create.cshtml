@@ -1,0 +1,197 @@
+@model FirstWeb.Models.ViewModels.BookingViewModel
+@{
+    ViewData["Title"] = "Book a Ticket";
+}
+
+<div class="booking-hero">
+    <div class="booking-hero-overlay"></div>
+    <div class="booking-hero-content">
+        <h1>🎫 Book Your Ticket</h1>
+        <p>Reserve your seat on the Metro Bus</p>
+    </div>
+</div>
+
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="booking-form-card">
+                <div class="booking-form-header">
+                    <h3>Ticket Booking Form</h3>
+                    <p>Fill in the details below to book your ride</p>
+                </div>
+
+                <form asp-action="Create" method="post" id="bookingForm">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <!-- Passenger Details Section -->
+                    <div class="form-section">
+                        <h5 class="form-section-title">👤 Passenger Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label asp-for="PassengerName" class="form-label"></label>
+                                <input asp-for="PassengerName" class="form-control" placeholder="Enter your full name" />
+                                <span asp-validation-for="PassengerName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PassengerEmail" class="form-label"></label>
+                                <input asp-for="PassengerEmail" class="form-control" placeholder="your@email.com" />
+                                <span asp-validation-for="PassengerEmail" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PassengerPhone" class="form-label"></label>
+                                <input asp-for="PassengerPhone" class="form-control" placeholder="03XX-XXXXXXX" />
+                                <span asp-validation-for="PassengerPhone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journey Details Section -->
+                    <div class="form-section">
+                        <h5 class="form-section-title">🚌 Journey Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label asp-for="RouteId" class="form-label"></label>
+                                <select asp-for="RouteId" class="form-select" id="routeSelect">
+                                    <option value="">-- Select a Route --</option>
+                                    @if (Model.AvailableRoutes != null)
+                                    {
+                                        @foreach (var route in Model.AvailableRoutes)
+                                        {
+                                            <option value="@route.RouteId"
+                                                    data-fare="@route.Fare"
+                                                    data-color="@route.BusColor">
+                                                @route.RouteName (Rs. @route.Fare) — @route.FromStation → @route.ToStation
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="RouteId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="BoardingStop" class="form-label"></label>
+                                <select asp-for="BoardingStop" class="form-select" id="boardingStopSelect">
+                                    <option value="">-- Select Boarding Stop --</option>
+                                    @if (Model.AvailableStops != null)
+                                    {
+                                        @foreach (var stop in Model.AvailableStops)
+                                        {
+                                            <option value="@stop.StopName">@stop.StopName (@stop.Area)</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="BoardingStop" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="DestinationStop" class="form-label"></label>
+                                <select asp-for="DestinationStop" class="form-select" id="destinationStopSelect">
+                                    <option value="">-- Select Destination --</option>
+                                    @if (Model.AvailableStops != null)
+                                    {
+                                        @foreach (var stop in Model.AvailableStops)
+                                        {
+                                            <option value="@stop.StopName">@stop.StopName (@stop.Area)</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="DestinationStop" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="TravelDate" class="form-label"></label>
+                                <input asp-for="TravelDate" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="TravelDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="NumberOfPassengers" class="form-label"></label>
+                                <input asp-for="NumberOfPassengers" class="form-control" type="number" min="1" max="10" id="passengerCount" />
+                                <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fare Summary -->
+                    <div class="fare-summary" id="fareSummary" style="display:none;">
+                        <h5 class="form-section-title">💰 Fare Summary</h5>
+                        <div class="fare-details">
+                            <div class="fare-row">
+                                <span>Fare per person</span>
+                                <span id="farePerPerson">Rs. 0</span>
+                            </div>
+                            <div class="fare-row">
+                                <span>Passengers</span>
+                                <span id="farePassengers">× 1</span>
+                            </div>
+                            <div class="fare-row fare-total">
+                                <span>Total Fare</span>
+                                <span id="fareTotal">Rs. 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit-booking">
+                        ✅ Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const routeSelect = document.getElementById('routeSelect');
+            const boardingSelect = document.getElementById('boardingStopSelect');
+            const destSelect = document.getElementById('destinationStopSelect');
+            const passengerCount = document.getElementById('passengerCount');
+            const fareSummary = document.getElementById('fareSummary');
+            let currentFare = 0;
+
+            function updateFareSummary() {
+                const passengers = parseInt(passengerCount.value) || 1;
+                if (currentFare > 0) {
+                    fareSummary.style.display = 'block';
+                    document.getElementById('farePerPerson').textContent = 'Rs. ' + currentFare;
+                    document.getElementById('farePassengers').textContent = '× ' + passengers;
+                    document.getElementById('fareTotal').textContent = 'Rs. ' + (currentFare * passengers);
+                } else {
+                    fareSummary.style.display = 'none';
+                }
+            }
+
+            routeSelect.addEventListener('change', function () {
+                const routeId = this.value;
+                const selectedOption = this.options[this.selectedIndex];
+                currentFare = parseFloat(selectedOption.getAttribute('data-fare')) || 0;
+
+                // Clear stops
+                boardingSelect.innerHTML = '<option value="">-- Select Boarding Stop --</option>';
+                destSelect.innerHTML = '<option value="">-- Select Destination --</option>';
+
+                if (routeId) {
+                    fetch('/Routes/GetStops?routeId=' + routeId)
+                        .then(res => res.json())
+                        .then(stops => {
+                            stops.forEach(stop => {
+                                const opt1 = new Option(stop.stopName + ' (' + stop.area + ')', stop.stopName);
+                                const opt2 = new Option(stop.stopName + ' (' + stop.area + ')', stop.stopName);
+                                boardingSelect.add(opt1);
+                                destSelect.add(opt2);
+                            });
+                        });
+                }
+
+                updateFareSummary();
+            });
+
+            passengerCount.addEventListener('input', updateFareSummary);
+
+            // Trigger initial fare if route is pre-selected
+            if (routeSelect.value) {
+                const selectedOption = routeSelect.options[routeSelect.selectedIndex];
+                currentFare = parseFloat(selectedOption.getAttribute('data-fare')) || 0;
+                updateFareSummary();
+            }
+        });
+    </script>
+}

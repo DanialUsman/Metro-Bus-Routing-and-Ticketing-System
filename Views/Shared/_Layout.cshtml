@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Metro Twin Cities</title>
+    <meta name="description" content="Metro Twin Cities - Book bus tickets and explore routes in Rawalpindi and Islamabad" />
+    <link rel="icon" type="image/png" href="~/favicon.ico?v=3" />
+    <link rel="shortcut icon" href="~/favicon.ico?v=3" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/FirstWeb.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark mtc-navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand mtc-brand" href="/">
+                    <span class="brand-icon">🚌</span>
+                    <span class="brand-text">Metro <span class="brand-highlight">Twin Cities</span></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Routes" asp-action="Index">Routes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-highlight" asp-area="" asp-controller="Booking" asp-action="Create">
+                                🎫 Book Ticket
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Booking" asp-action="MyBookings">My Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid px-0">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="mtc-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5 class="footer-brand">🚌 Metro Twin Cities</h5>
+                    <p class="footer-desc">Your trusted metro bus service connecting Rawalpindi and Islamabad.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6 class="footer-heading">Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a asp-controller="Routes" asp-action="Index">Bus Routes</a></li>
+                        <li><a asp-controller="Booking" asp-action="Create">Book Ticket</a></li>
+                        <li><a asp-controller="Home" asp-action="ContactUs">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6 class="footer-heading">Contact Info</h6>
+                    <ul class="footer-links">
+                        <li>📍 Islamabad, Pakistan</li>
+                        <li>📞 051-1234567</li>
+                        <li>✉️ info@metrotwincities.pk</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="footer-divider" />
+            <p class="footer-copyright">© 2025 Metro Twin Cities. All rights reserved. | <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></p>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
